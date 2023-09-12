@@ -9,3 +9,9 @@ type Team struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
+
+func GetTeam(id string) (*Team, error) {
+	var team Team
+	result := DB.Where("id = ?", id).First(&team)
+	return &team, result.Error
+}

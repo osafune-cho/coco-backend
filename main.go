@@ -16,12 +16,14 @@ func failedToMarshalResponse(w http.ResponseWriter) {
 }
 
 func main() {
-	http.HandleFunc("/teams", teamsCreate)
+	mux := NewRouter()
+	mux.Add(http.MethodPost, "/teams", teamsCreate)
+	mux.Add(http.MethodGet, "/teams/([^/]+)", teamGet)
 
 	err := InitDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Fatal(http.ListenAndServe(":8181", nil))
+	log.Fatal(http.ListenAndServe(":8181", mux))
 }
