@@ -9,5 +9,5 @@ pkgs.mkShell {
     nixpkgs-fmt
   ];
 
-  GOROOT="${pkgs.go}/share/go";
+  GOROOT = "${pkgs.go}/share/go";
 }
