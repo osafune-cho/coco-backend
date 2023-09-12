@@ -16,6 +16,9 @@ paths:
                 name:
                   type: string
                   required: true
+                courseId:
+                  type: string
+                  required: true
       responses:
         '201':
           description: Created
@@ -128,6 +131,9 @@ components:
           type: string
           format: uuid
         teamId:
+          type: string
+          format: uuid
+        courseId:
           type: string
           format: uuid
         url:
