@@ -8,4 +8,6 @@ pkgs.mkShell {
     gopls
     nixpkgs-fmt
   ];
+
+  GOROOT="${pkgs.go}/share/go";
 }
