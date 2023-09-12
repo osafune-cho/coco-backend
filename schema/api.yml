@@ -118,6 +118,9 @@ components:
           format: uuid
         name:
           type: string
+        courseId:
+          type: string
+          format: uuid
         createdAt:
           type: string
           format: date-time
@@ -131,9 +134,6 @@ components:
           type: string
           format: uuid
         teamId:
-          type: string
-          format: uuid
-        courseId:
           type: string
           format: uuid
         url:
