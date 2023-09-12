@@ -1,0 +1,20 @@
+name: Generate Documents
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v22
+      - run: nix-env -f ./nix/pkgs.nix -iA nodejs
+      - name: build documents
+        run: |
+          cd schema
+          npx @redocly/cli build-docs ./api.yml -o dist/index.html
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./schema/dist
+          destination_dir: .
+          keep_files: true
