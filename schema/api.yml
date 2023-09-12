@@ -62,6 +62,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFound'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
   /teams/{id}/materials:
     get:
       summary: Get image links of materials uploaded to the specified team
