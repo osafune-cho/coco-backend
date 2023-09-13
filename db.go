@@ -62,6 +62,11 @@ func getDsn() (string, error) {
 		return "", err
 	}
 
+	sslmode, err := getEnvOrError("DB_SSLMODE")
+	if err != nil {
+		return "", err
+	}
+
 	config := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
 		host,
@@ -69,7 +74,7 @@ func getDsn() (string, error) {
 		password,
 		dbName,
 		port,
-		"disable",
+		sslmode,
 		"Asia/Tokyo",
 	)
 
