@@ -87,7 +87,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Material'
+                  type: string
         '404':
           description: Not Found
           content:
@@ -120,6 +120,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Material'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conflict'
         '500':
           description: Internal Server Error
           content:
@@ -179,6 +191,14 @@ components:
           type: integer
           format: int32
     BadRequest:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: integer
+          format: int32
+    Conflict:
       type: object
       properties:
         message:
