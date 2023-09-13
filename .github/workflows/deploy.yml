@@ -1,0 +1,37 @@
+name: deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v22
+      - run: nix-build
+      - name: Create ssh private key file
+        run: |
+          touch ./ssh_private_key
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ./ssh_private_key
+          chmod 700 ./ssh_private_key
+          eval "$(ssh-agent)"
+          ssh-add ./ssh_private_key
+        env:
+          SSH_PRIVATE_KEY: "${{ secrets.SSH_PRIVATE_KEY }}"
+      - name: Adding Known Hosts
+        run: |
+          mkdir -p ~/.ssh/
+          ssh-keyscan -H ${{ secrets.SSH_HOST_NAME }} >> ~/.ssh/known_hosts
+      - name: Deploy
+        run: |
+          sudo chmod -R 755 result/
+          rsync -avz --delete -e "ssh -i ./ssh_private_key" result/bin $SSH_USER_NAME@$SSH_HOST_NAME:$SSH_DIST_PATH
+        env:
+          SSH_USER_NAME: ${{ secrets.SSH_USER_NAME }}
+          SSH_HOST_NAME: ${{ secrets.SSH_HOST_NAME }}
+          SSH_DIST_PATH: ${{ secrets.SSH_DIST_PATH }}
+      - name: Delete ssh private key file and known_hosts
+        if: always()
+        run: rm -f ./ssh_private_key ~/.ssh/known_hosts
