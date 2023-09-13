@@ -28,30 +28,21 @@ jobs:
     runs-on: ubuntu-22.04
     needs: push-image
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout coco-infrastructure
+        uses: actions/checkout@v3
+        with:
+          repository: osafune-cho/coco-infrastructure
+          ref: main
+          path: coco-infrastructure
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: cachix/install-nix-action@v22
-      - run: nix-build
-      - name: Create ssh private key file
-        run: |
-          touch ./ssh_private_key
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ./ssh_private_key
-          chmod 700 ./ssh_private_key
-          eval "$(ssh-agent)"
-          ssh-add ./ssh_private_key
-        env:
-          SSH_PRIVATE_KEY: "${{ secrets.SSH_PRIVATE_KEY }}"
-      - name: Adding Known Hosts
-        run: |
-          mkdir -p ~/.ssh/
-          ssh-keyscan -H ${{ secrets.SSH_HOST_NAME }} >> ~/.ssh/known_hosts
       - name: Deploy
-        run: |
-          sudo chmod -R 755 result/
-          rsync -avz --delete -e "ssh -i ./ssh_private_key" result/bin/coco-backend $SSH_USER_NAME@$SSH_HOST_NAME:$SSH_DIST_PATH
-        env:
-          SSH_USER_NAME: ${{ secrets.SSH_USER_NAME }}
-          SSH_HOST_NAME: ${{ secrets.SSH_HOST_NAME }}
-          SSH_DIST_PATH: ${{ secrets.SSH_DIST_PATH }}
+        uses: osafune-cho/coco-infrastructure/actions/deploy@main
+        with:
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh_host_name: ${{ secrets.SSH_HOST_NAME }}
+          ssh_user_name: ${{ secrets.SSH_USER_NAME }}
+          ssh_dist_path: ${{ secrets.SSH_DIST_PATH }}
       - name: Delete ssh private key file and known_hosts
         if: always()
         run: rm -f ./ssh_private_key ~/.ssh/known_hosts
