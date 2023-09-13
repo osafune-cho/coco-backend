@@ -8,6 +8,23 @@ import (
 
 func materialsGet(w http.ResponseWriter, r *http.Request) {
 	teamId := PathParam(r, 0)
+
+	_, err := GetTeam(teamId)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		response := &Response{
+			Message: "team not found",
+			Status:  http.StatusNotFound,
+		}
+		responseJSON, err := json.Marshal(response)
+		if err != nil {
+			failedToMarshalResponse(w)
+			return
+		}
+		w.Write(responseJSON)
+		return
+	}
+
 	materials, err := GetMaterials(teamId)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
