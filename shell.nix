@@ -22,6 +22,7 @@ pkgs.mkShell {
     go-tools
     delve
     gopls
+    poppler_utils
     nixpkgs-fmt
   ];
 
