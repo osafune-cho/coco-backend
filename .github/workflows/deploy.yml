@@ -5,8 +5,24 @@ on:
       - main
 
 jobs:
-  deploy:
+  push-image:
+    name: Push Docker Image
     runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v22
+      - name: Build the image
+        run: docker load < $(nix-build nix/image.nix --argstr tag latest --argstr name coco)
+      - name: Tag the image
+        run: docker tag coco:latest "ghcr.io/osafune/coco:latest"
+      - name: Login to the registry
+        run: echo '${{ secrets.GITHUB_TOKEN }}' | docker login ghcr.io -u '${{ github.actor }}' --password-stdin
+      - name: Push the image
+        run: docker push --all-tags "ghcr.io/osafune/coco"
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-22.04
+    needs: push-image
     steps:
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v22
