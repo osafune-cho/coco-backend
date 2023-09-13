@@ -1,6 +1,15 @@
 schema = 3
 
 [mod]
+  [mod."github.com/Azure/azure-pipeline-go"]
+    version = "v0.2.3"
+    hash = "sha256-i2NFxdjl3O4GBCOxj0zBSJz4fN4TymHElVzgsE/mmJQ="
+  [mod."github.com/Azure/azure-storage-blob-go"]
+    version = "v0.15.0"
+    hash = "sha256-bz0Edx9l+XMgBUc47UJLCZZ4BKG3e4nmHHDb5f3S0gY="
+  [mod."github.com/chai2010/webp"]
+    version = "v1.1.1"
+    hash = "sha256-fgqfaEmrjMRcUC6WXVISIujzGYauZTKDDrJGLodn70c="
   [mod."github.com/google/uuid"]
     version = "v1.3.1"
     hash = "sha256-JxAEAB2bFlGPShFreyOWjUahjaGV3xYS5TpfUOikod0="
@@ -19,9 +28,21 @@ schema = 3
   [mod."github.com/jinzhu/now"]
     version = "v1.1.5"
     hash = "sha256-NNLqoFx9FczBBDpD0O0aSHnC/YDZ9E/xQ340o7u63IM="
+  [mod."github.com/mattn/go-ieproxy"]
+    version = "v0.0.1"
+    hash = "sha256-CXAS98GDJKInGgr/H6W5UvR1/GGqKLbkBkILcTmXMXQ="
+  [mod."github.com/rogpeppe/go-internal"]
+    version = "v1.11.0"
+    hash = "sha256-BucSndJVnqX9e6p5PfA6Z8N2bGfIeRfxAxYLUDXTbIo="
   [mod."golang.org/x/crypto"]
     version = "v0.8.0"
     hash = "sha256-gZ225jF4mxRLlba6OzdTvrsP6kLYf/xOjWMFavCF6tY="
+  [mod."golang.org/x/net"]
+    version = "v0.9.0"
+    hash = "sha256-EG5GRDq282twyce8uugsDTjMz1pNn6zPcyVTZmSiJ14="
+  [mod."golang.org/x/sys"]
+    version = "v0.7.0"
+    hash = "sha256-GotRHJaas/q3L+tFam0q3oQ1rc8GDStt7wnz9h8MTEU="
   [mod."golang.org/x/text"]
     version = "v0.9.0"
     hash = "sha256-tkhDeMsSQZr3jo7vmKehWs3DvWetwXR0IB+DCLbQ4nk="
