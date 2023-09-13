@@ -19,6 +19,8 @@ func main() {
 	mux := NewRouter()
 	mux.Add(http.MethodPost, "/teams", teamsCreate)
 	mux.Add(http.MethodGet, "/teams/([^/]+)", teamGet)
+	mux.Add(http.MethodPost, "/teams/([^/]+)/materials", materialsCreate)
+	mux.Add(http.MethodGet, "/teams/([^/]+)/materials", materialsGet)
 
 	err := InitDB()
 	if err != nil {
