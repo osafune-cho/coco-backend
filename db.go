@@ -23,6 +23,7 @@ func InitDB() error {
 
 	db.DB()
 	db.AutoMigrate(&Team{})
+	db.AutoMigrate(&Material{})
 	DB = db
 	return nil
 }
