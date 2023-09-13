@@ -14,11 +14,11 @@ jobs:
       - name: Build the image
         run: docker load < $(nix-build nix/image.nix --argstr tag latest --argstr name coco)
       - name: Tag the image
-        run: docker tag coco:latest "ghcr.io/osafune/coco:latest"
+        run: docker tag coco:latest "ghcr.io/osafune-cho/coco:latest"
       - name: Login to the registry
         run: echo '${{ secrets.GITHUB_TOKEN }}' | docker login ghcr.io -u '${{ github.actor }}' --password-stdin
       - name: Push the image
-        run: docker push --all-tags "ghcr.io/osafune/coco"
+        run: docker push --all-tags "ghcr.io/osafune-cho/coco"
   deploy:
     name: Deploy to Server
     runs-on: ubuntu-22.04
