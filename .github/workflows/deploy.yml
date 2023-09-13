@@ -27,7 +27,7 @@ jobs:
       - name: Deploy
         run: |
           sudo chmod -R 755 result/
-          rsync -avz --delete -e "ssh -i ./ssh_private_key" result/bin $SSH_USER_NAME@$SSH_HOST_NAME:$SSH_DIST_PATH
+          rsync -avz --delete -e "ssh -i ./ssh_private_key" result/bin/coco-backend $SSH_USER_NAME@$SSH_HOST_NAME:$SSH_DIST_PATH
         env:
           SSH_USER_NAME: ${{ secrets.SSH_USER_NAME }}
           SSH_HOST_NAME: ${{ secrets.SSH_HOST_NAME }}
