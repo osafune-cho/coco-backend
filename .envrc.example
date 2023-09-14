@@ -1,0 +1,11 @@
+use nix
+
+export DB_HOST=
+export DB_PORT=
+export DB_USER=
+export DB_PASSWORD=
+export DB_SSLMODE=
+export DB_NAME=
+export AZURE_STORAGE_ACCOUNT_NAME=
+export AZURE_STORAGE_ACCOUNT_KEY=
+export AZURE_STORAGE_CONTAINER_NAME=
