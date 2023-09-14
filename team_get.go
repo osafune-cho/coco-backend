@@ -6,6 +6,8 @@ import (
 )
 
 func teamGet(w http.ResponseWriter, r *http.Request) {
+	SetCorsPolicies(w, r)
+
 	id := PathParam(r, 0)
 	team, err := GetTeam(id)
 	if err != nil {

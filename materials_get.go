@@ -7,6 +7,8 @@ import (
 )
 
 func materialsGet(w http.ResponseWriter, r *http.Request) {
+	SetCorsPolicies(w, r)
+
 	teamId := PathParam(r, 0)
 
 	_, err := GetTeam(teamId)

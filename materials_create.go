@@ -22,6 +22,8 @@ import (
 const maxUploadSize = 20 * 1024 * 1024
 
 func materialsCreate(w http.ResponseWriter, r *http.Request) {
+	SetCorsPolicies(w, r)
+
 	team, err := GetTeam(PathParam(r, 0))
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)

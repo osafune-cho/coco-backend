@@ -13,6 +13,8 @@ type TeamsCreateRequestJson struct {
 }
 
 func teamsCreate(w http.ResponseWriter, r *http.Request) {
+	SetCorsPolicies(w, r)
+
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
