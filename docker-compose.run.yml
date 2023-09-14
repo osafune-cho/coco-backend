@@ -1,0 +1,27 @@
+version: '3'
+services:
+  coco:
+    container_name: coco
+    image: ghcr.io/osafune-cho/coco:latest
+    ports:
+      - 8181:8181
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: $DB_USER
+      DB_PASSWORD: $DB_PASSWORD
+      DB_NAME: $DB_NAME
+      DB_SSLMODE: $DB_SSLMODE
+      AZURE_STORAGE_ACCOUNT_NAME: $AZURE_STORAGE_ACCOUNT_NAME
+      AZURE_STORAGE_ACCOUNT_KEY: $AZURE_STORAGE_ACCOUNT_KEY
+      AZURE_STORAGE_CONTAINER_NAME: $AZURE_STORAGE_CONTAINER_NAME
+  postgres:
+    container_name: postgres
+    image: postgres:15.4
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_USER: $DB_USER
+      POSTGRES_DB: $DB_NAME
