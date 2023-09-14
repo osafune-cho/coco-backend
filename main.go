@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 )
 
 type Response struct {
@@ -44,6 +45,10 @@ func options(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	if _, err := os.Stat("/tmp"); os.IsNotExist(err) {
+		os.Mkdir("/tmp", 0755)
+	}
+
 	mux := NewRouter()
 	mux.Add(http.MethodOptions, "/teams", options)
 	mux.Add(http.MethodPost, "/teams", teamsCreate)
