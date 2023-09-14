@@ -40,8 +40,23 @@ func materialsCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = GetMaterials(team.ID)
-	if err == nil {
+	materials, err := GetMaterials(team.ID)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		response := &Response{
+			Message: "failed to get materials",
+			Status:  http.StatusInternalServerError,
+		}
+		responseJSON, err := json.Marshal(response)
+		if err != nil {
+			failedToMarshalResponse(w)
+			return
+		}
+		w.Write(responseJSON)
+		return
+	}
+
+	if len(materials) > 0 {
 		w.WriteHeader(http.StatusConflict)
 		response := &Response{
 			Message: "materials already exists",
