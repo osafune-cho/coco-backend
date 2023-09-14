@@ -42,19 +42,15 @@ func materialsGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	urls := make([]string, len(materials))
-	for i, material := range materials {
-		urls[i] = material.Url
-	}
-	sort.Slice(urls, func(i, j int) bool {
-		return urls[i] < urls[j]
+	sort.Slice(materials, func(i, j int) bool {
+		return materials[i].Url < materials[j].Url
 	})
 
-	urlsJson, err := json.Marshal(urls)
+	materialsJson, err := json.Marshal(materials)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		response := &Response{
-			Message: "failed to marshal urls",
+			Message: "failed to marshal materials",
 			Status:  http.StatusInternalServerError,
 		}
 		responseJSON, err := json.Marshal(response)
@@ -66,5 +62,5 @@ func materialsGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write(urlsJson)
+	w.Write(materialsJson)
 }

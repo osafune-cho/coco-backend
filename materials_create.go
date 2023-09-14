@@ -121,6 +121,46 @@ func materialsCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var heights []int
+	var widths []int
+	for _, file := range webpFiles {
+		defer os.Remove(file)
+		imgData, err := os.ReadFile(file)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			response := &Response{
+				Message: "failed to read webp file: " + err.Error(),
+				Status:  http.StatusInternalServerError,
+			}
+			responseJSON, err := json.Marshal(response)
+			if err != nil {
+				failedToMarshalResponse(w)
+				return
+			}
+			w.Write(responseJSON)
+			return
+		}
+
+		width, height, _, err := webp.GetInfo(imgData)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			response := &Response{
+				Message: "failed to get webp info: " + err.Error(),
+				Status:  http.StatusInternalServerError,
+			}
+			responseJSON, err := json.Marshal(response)
+			if err != nil {
+				failedToMarshalResponse(w)
+				return
+			}
+			w.Write(responseJSON)
+			return
+		}
+
+		heights = append(heights, height)
+		widths = append(widths, width)
+	}
+
 	urls, err := uploadFileToAzure(webpFiles)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -136,7 +176,7 @@ func materialsCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, url := range urls {
+	for i := range urls {
 		u, err := uuid.NewRandom()
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -156,7 +196,9 @@ func materialsCreate(w http.ResponseWriter, r *http.Request) {
 		material := &Material{
 			ID:     uu,
 			TeamID: team.ID,
-			Url:    url,
+			Url:    urls[i],
+			Height: heights[i],
+			Width:  widths[i],
 		}
 
 		result := DB.Create(material)
