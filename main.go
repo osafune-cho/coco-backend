@@ -23,7 +23,7 @@ func SetCorsPolicies(w http.ResponseWriter, r *http.Request) {
 		"http://coco.osafune-cho.vercel.app",
 		"https://coco.osafune-cho.vercel.app",
 		"http://coco-frontend-lyart.vercel.app",
-		"https;//coco-frontend-lyart.vercel.app",
+		"https://coco-frontend-lyart.vercel.app",
 	}
 	origin := r.Header.Get("Origin")
 
@@ -38,10 +38,18 @@ func SetCorsPolicies(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 }
 
+func options(w http.ResponseWriter, r *http.Request) {
+	SetCorsPolicies(w, r)
+	w.WriteHeader(http.StatusOK)
+}
+
 func main() {
 	mux := NewRouter()
+	mux.Add(http.MethodOptions, "/teams", options)
 	mux.Add(http.MethodPost, "/teams", teamsCreate)
+	mux.Add(http.MethodOptions, "/teams/([^/]+)", options)
 	mux.Add(http.MethodGet, "/teams/([^/]+)", teamGet)
+	mux.Add(http.MethodOptions, "/teams/([^/]+)/materials", options)
 	mux.Add(http.MethodPost, "/teams/([^/]+)/materials", materialsCreate)
 	mux.Add(http.MethodGet, "/teams/([^/]+)/materials", materialsGet)
 
