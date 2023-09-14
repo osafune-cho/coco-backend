@@ -19,6 +19,7 @@ pkgs.dockerTools.buildImage {
   contents = [
     coco
     pkgs.poppler_utils
+    pkgs.nss-cacert
   ];
   config = {
     Cmd = [ "/bin/coco-backend" ];
