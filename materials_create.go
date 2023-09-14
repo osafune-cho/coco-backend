@@ -94,7 +94,7 @@ func materialsCreate(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		response := &Response{
-			Message: "failed to get pdf",
+			Message: "failed to get pdf: " + err.Error(),
 			Status:  http.StatusBadRequest,
 		}
 		responseJSON, err := json.Marshal(response)
@@ -110,7 +110,7 @@ func materialsCreate(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		response := &Response{
-			Message: "failed to convert pdf to webp",
+			Message: "failed to convert pdf to webp: " + err.Error(),
 			Status:  http.StatusInternalServerError,
 		}
 		responseJSON, err := json.Marshal(response)
@@ -125,7 +125,7 @@ func materialsCreate(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		response := &Response{
-			Message: "failed to upload file to azure",
+			Message: "failed to upload file to azure: " + err.Error(),
 			Status:  http.StatusInternalServerError,
 		}
 		responseJSON, err := json.Marshal(response)
@@ -233,7 +233,7 @@ func convertPdfToWebp(pdfFile multipart.File, teamId string) ([]string, error) {
 	tmpFile.Close()
 
 	var outBuf bytes.Buffer
-	cmd := exec.Command("pdftoppm", "-png", tmpFilePath, filepath.Join(tmpDir, teamId))
+	cmd := exec.Command("/bin/pdftoppm", "-png", tmpFilePath, filepath.Join(tmpDir, teamId))
 	cmd.Stdout = &outBuf
 	err = cmd.Run()
 	if err != nil {
